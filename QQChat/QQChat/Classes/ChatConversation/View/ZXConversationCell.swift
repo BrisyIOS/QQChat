@@ -35,7 +35,7 @@ class ZXConversationCell: UITableViewCell {
                 
                 return;
             }
-            
+          
             // 给发送时间赋值
             if conversationModel.time != nil {
                 
@@ -43,9 +43,12 @@ class ZXConversationCell: UITableViewCell {
             }
             
             // 给头像赋值
-            if conversationModel.icon != nil {
+            if conversationModel.type == 0 {
                 
-                icon.image = UIImage(named: conversationModel.icon!);
+                icon.image = UIImage(named: "me.png");
+            } else {
+                
+                icon.image = UIImage(named: "other.png");
             }
             
             // 给内容赋值
@@ -53,6 +56,9 @@ class ZXConversationCell: UITableViewCell {
                 
                 contentButton.setTitle(conversationModel.text, forState: UIControlState.Normal);
             }
+            
+            // 根据数据重新布局
+            layoutIfNeeded();
             
         }
     }
@@ -94,42 +100,48 @@ class ZXConversationCell: UITableViewCell {
         
         super.layoutSubviews();
         
-        if conversationModel!.type == 0 {
+        // 获取可选类型中的数据
+        guard let conversationModel = conversationModel else {
             
-            conversationModel!.icon = "me.png";
+            return;
+        }
+        
+        if conversationModel.type == 0 {
+            
+            conversationModel.icon = "me.png";
         contentButton.setBackgroundImage(UIImage.resizeImage("chat_recive_nor@2x.png"), forState: UIControlState.Normal);
             
-        } else if conversationModel!.type == 1 {
+        } else if conversationModel.type == 1 {
             
-            conversationModel!.icon = "other.png";
+            conversationModel.icon = "other.png";
         contentButton.setBackgroundImage(UIImage.resizeImage("chat_send_nor@2x.png"), forState: UIControlState.Normal);
         }
         
         // 设置时间的frame
-        if conversationModel?.time != nil {
+        if conversationModel.time != nil {
             
             let timeLabelX = RealValue(0);
             let timeLabelY = RealValue(0);
             let timeLabelW = bounds.size.width;
             let timeLabelH = RealValue(40);
             timeLabel.frame = CGRectMake(timeLabelX, timeLabelY, timeLabelW, timeLabelH);
-            conversationModel?.cellHeight = timeLabelH;
+            conversationModel.cellHeight = timeLabelH;
         }
         
         // 设置头像的frame
-        if conversationModel?.icon != nil {
+        if conversationModel.icon != nil {
             
             let iconW = RealValue(40);
             let iconH = iconW;
-            let iconX = conversationModel?.type == 0 ? RealValue(10) : bounds.size.width - iconW - RealValue(10);
+            let iconX = conversationModel.type == 0 ? RealValue(10) : bounds.size.width - iconW - RealValue(10);
             let iconY = CGRectGetMaxY(timeLabel.frame);
             icon.frame = CGRectMake(iconX, iconY, iconW, iconH);
-            conversationModel?.cellHeight = (conversationModel?.cellHeight)! + iconH;
+            conversationModel.cellHeight = (conversationModel.cellHeight)! + iconH;
             
         }
         
         // 设置内容的frame
-        if conversationModel?.text != nil {
+        if conversationModel.text != nil {
             
             let padding = RealValue(10);
             let contentButtonW = RealValue(200);
@@ -138,9 +150,9 @@ class ZXConversationCell: UITableViewCell {
             let contentButtonTitle = contentButton.titleForState(UIControlState.Normal);
             let textSize = sizeWithFont((contentButton.titleLabel?.font)!, maxSize: maxSize, text: contentButtonTitle!);
             let realSize = CGSizeMake(textSize.width + RealValue(30), textSize.height + RealValue(30));
-            let contentButtonX = conversationModel?.type == 0 ? CGRectGetMaxX(icon.frame) + padding : bounds.size.width - padding - RealValue(40) - padding - realSize.width;
+            let contentButtonX = conversationModel.type == 0 ? CGRectGetMaxX(icon.frame) + padding : bounds.size.width - padding - RealValue(40) - padding - realSize.width;
             contentButton.frame = CGRectMake(contentButtonX, contentButtonY, realSize.width, realSize.height);
-            conversationModel?.cellHeight = (conversationModel?.cellHeight)! + realSize.height;
+            conversationModel.cellHeight = (conversationModel.cellHeight)! + realSize.height;
         }
         
         

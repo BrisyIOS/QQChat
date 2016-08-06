@@ -26,6 +26,7 @@ class ZXConversationController: UIViewController , UITableViewDataSource,  UITab
         tableView.dataSource = self;
         tableView.delegate = self;
         tableView.backgroundColor = RGB(235, g: 235, b: 235);
+        tableView.estimatedRowHeight = 100;
         tableView.separatorStyle = UITableViewCellSeparatorStyle.None;
         self.view.addSubview(tableView);
         
@@ -35,7 +36,8 @@ class ZXConversationController: UIViewController , UITableViewDataSource,  UITab
         
         // 解析数据
         parseData();
-
+   
+    
     }
     
     // MARK: - 解析plist文件
@@ -61,7 +63,7 @@ class ZXConversationController: UIViewController , UITableViewDataSource,  UITab
                 self.tableView.reloadData();
             })
         }
-        
+    
     }
     
     // MARK: - 返回cell高度
@@ -69,12 +71,7 @@ class ZXConversationController: UIViewController , UITableViewDataSource,  UITab
         
         let model = conversationArray[indexPath.row];
         
-        guard let height = model.cellHeight else {
-            
-            return 0;
-        }
-        
-        return height;
+        return (model.cellHeight != nil) ? model.cellHeight! : 0;
         
     }
     
@@ -106,7 +103,7 @@ class ZXConversationController: UIViewController , UITableViewDataSource,  UITab
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+       
     }
     
 }
