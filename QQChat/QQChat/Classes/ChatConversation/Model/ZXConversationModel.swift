@@ -16,6 +16,7 @@ class ZXConversationModel: NSObject {
     var text : String?;
     var type : NSNumber?
     var cellHeight : CGFloat? = 0;
+    var isShowTime : Bool?;
     
     override func setValue(value: AnyObject?, forUndefinedKey key: String) {
         

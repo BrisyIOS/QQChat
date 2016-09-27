@@ -30,7 +30,7 @@ class ZXListViewController: UIViewController , UITableViewDataSource, UITableVie
         tableView.delegate = self;
         tableView.rowHeight = RealValue(50);
         self.view.addSubview(tableView);
-        
+
         
         // 注册header
         tableView.registerClass(ZXSectionHeaderView.self, forHeaderFooterViewReuseIdentifier: sectionHeaderIdentifier);
@@ -40,7 +40,6 @@ class ZXListViewController: UIViewController , UITableViewDataSource, UITableVie
         
         // 解析plist文件
         parseData();
-
         
     }
     
@@ -89,7 +88,6 @@ class ZXListViewController: UIViewController , UITableViewDataSource, UITableVie
         let sectionModel = sectionArray[indexPath.section];
         let friendsArray = sectionModel.friendsArray;
         let friendModel = friendsArray[indexPath.row];
-        print(friendModel);
         cell.friendModel = friendModel;
         
         return cell;
@@ -115,24 +113,14 @@ class ZXListViewController: UIViewController , UITableViewDataSource, UITableVie
         sectionModel.section = section;
         let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier(sectionHeaderIdentifier) as!ZXSectionHeaderView;
         header.delegate = self;
+        header.sectionModel = sectionModel;
+        
         if sectionModel.isOpenSection == true {
             
-            UIView.animateWithDuration(0.3, animations: {
-                
-                header.icon.transform = CGAffineTransformRotate(header.icon.transform, CGFloat(M_PI_2));
-                
-            })
-            
+            header.icon.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_2));
         } else {
-            
-            UIView.animateWithDuration(0.3, animations: {
-                
-                header.icon.transform = CGAffineTransformIdentity;
-                
-            })
+            header.icon.transform = CGAffineTransformIdentity;
         }
-        
-        header.sectionModel = sectionModel;
         
         return header;
         
@@ -140,7 +128,7 @@ class ZXListViewController: UIViewController , UITableViewDataSource, UITableVie
     
     // MARK: - 实现点击header协议
     func clickHeadView(section: NSInteger) {
-              
+        
         // 刷新表格
         self.tableView.reloadSections(NSIndexSet.init(index: section), withRowAnimation: UITableViewRowAnimation.Fade);
     }

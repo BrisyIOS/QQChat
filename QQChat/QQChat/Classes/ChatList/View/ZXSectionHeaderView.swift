@@ -9,7 +9,6 @@
 import UIKit
 
 protocol ZXSectionHeaderViewDelegate : NSObjectProtocol {
-    
     func clickHeadView(section : NSInteger);// 是否打开分组
 }
 
@@ -19,24 +18,18 @@ class ZXSectionHeaderView: UITableViewHeaderFooterView {
     private var nameLabel : UILabel!;
     weak var delegate : ZXSectionHeaderViewDelegate?;
     var sectionModel : ZXSectionModel? {
-        
         didSet {
-            
             // 获取可选类型中的数据
             guard let sectionModel = sectionModel else {
-                
                 return;
             }
-            
             nameLabel.text = sectionModel.name;
         }
-    };
-    
+    }
     
     override init(reuseIdentifier: String?) {
         
         super.init(reuseIdentifier: reuseIdentifier);
-        
         
         // icon 
         icon = UIImageView();
